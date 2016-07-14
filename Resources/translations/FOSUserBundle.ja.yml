@@ -1,0 +1,17 @@
+security:
+    login:
+        username: "ユーザー名またはメールアドレス"
+        resetting: "パスワードを忘れた方"
+
+resetting:
+    check_email_back: "ログインページに戻る"
+    request:
+        username: "ユーザー名またはメールアドレス"
+
+deactivation:
+    deactivate:
+
+form:
+    current_password: 現在のパスワード
+    new_password: 新しいパスワード
+    new_password_confirmation: 新しいパスワードを再入力

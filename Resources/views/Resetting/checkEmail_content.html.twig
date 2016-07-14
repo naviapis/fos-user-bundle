@@ -1,0 +1,9 @@
+{% trans_default_domain 'FOSUserBundle' %}
+
+<div class="panel panel-default">
+    <div class="panel-body">
+        <p>{{ 'resetting.check_email'|trans({'%email%': email}) }}</p>
+
+        <a href="{{ path('fos_user_security_login') }}" class="btn btn-default">{{ 'resetting.check_email_back'|trans }}</a>
+    </div>
+</div>
