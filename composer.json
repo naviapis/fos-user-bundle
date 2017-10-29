@@ -1,9 +1,9 @@
 {
     "name": "naviapps/user-bundle",
-    "description": "Symfony NaviappsUserBundle extends FOSUserBundle",
-    "keywords": ["User management"],
-    "homepage": "https://github.com/naviapps/user-bundle",
     "type": "symfony-bundle",
+    "description": "Symfony NaviappsUserBundle",
+    "keywords": ["user"],
+    "homepage": "https://github.com/naviapps/user-bundle",
     "license": "MIT",
     "authors": [
         {
@@ -12,10 +12,13 @@
         }
     ],
     "require": {
-        "php": ">=5.5.9"
+        "php": "^5.5.9|>=7.0.8"
     },
     "autoload": {
-        "psr-4": { "Naviapps\\Bundle\\UserBundle\\": "" }
+        "psr-4": { "Naviapps\\Bundle\\UserBundle\\": "" },
+        "exclude-from-classmap": [
+            "/Tests/"
+        ]
     },
     "extra": {
         "branch-alias": {

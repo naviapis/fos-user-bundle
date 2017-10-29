@@ -1,0 +1,4 @@
+naviapps_user_deactivation_deactivate:
+    path: /
+    defaults: { _controller: NaviappsUserBundle:Deactivation:deactivate }
+    methods: [GET, POST]

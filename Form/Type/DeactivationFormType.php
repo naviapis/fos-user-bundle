@@ -7,20 +7,21 @@ use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Security\Core\Validator\Constraints\UserPassword;
+use Symfony\Component\Validator\Constraints\NotBlank;
 
 class DeactivationFormType extends AbstractType
 {
+    /**
+     * @var string
+     */
     private $class;
-    private $validationGroups;
 
     /**
      * @param string $class The User class name
-     * @param array $validationGroups
      */
-    public function __construct($class, array $validationGroups)
+    public function __construct($class)
     {
         $this->class = $class;
-        $this->validationGroups = $validationGroups;
     }
 
     /**
@@ -28,16 +29,23 @@ class DeactivationFormType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        switch ($options['flow_step']) {
-            case 1:
-                $builder->add('current_password', PasswordType::class, [
-                    'label' => 'form.current_password',
-                    'translation_domain' => 'FOSUserBundle',
-                    'mapped' => false,
-                    'constraints' => new UserPassword(),
-                ]);
-                break;
+        $constraintsOptions = array(
+            'message' => 'fos_user.current_password.invalid',
+        );
+
+        if (!empty($options['validation_groups'])) {
+            $constraintsOptions['groups'] = array(reset($options['validation_groups']));
         }
+
+        $builder->add('current_password', PasswordType::class, [
+            'label' => 'form.current_password',
+            'translation_domain' => 'FOSUserBundle',
+            'mapped' => false,
+            'constraints' => [
+                new NotBlank(),
+                new UserPassword($constraintsOptions),
+            ],
+        ]);
     }
 
     /**
@@ -48,7 +56,6 @@ class DeactivationFormType extends AbstractType
         $resolver->setDefaults([
             'data_class' => $this->class,
             'csrf_token_id' => 'deactivation',
-            'validation_groups' => $this->validationGroups,
         ]);
     }
 

@@ -1,6 +1,0 @@
-security:
-    login:
-        resetting: Forgot password?
-
-resetting:
-    check_email_back: Return to login

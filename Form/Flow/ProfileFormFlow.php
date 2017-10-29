@@ -8,6 +8,19 @@ use Naviapps\Bundle\UserBundle\Form\Type\ProfileFormType;
 class ProfileFormFlow extends FormFlow
 {
     /**
+     * @var string
+     */
+    private $type;
+
+    /**
+     * @param string $type The type of the form
+     */
+    public function __construct($type)
+    {
+        $this->type = $type;
+    }
+
+    /**
      * {@inheritdoc}
      */
     protected function loadStepsConfig()
@@ -15,7 +28,7 @@ class ProfileFormFlow extends FormFlow
         return [
             [
                 'label' => 'profile',
-                'form_type' => ProfileFormType::class,
+                'form_type' => $this->type,
             ],
         ];
     }

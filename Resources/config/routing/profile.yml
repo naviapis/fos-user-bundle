@@ -1,0 +1,4 @@
+fos_user_profile_edit:
+    path: /edit
+    defaults: { _controller: NaviappsUserBundle:Profile:edit }
+    methods: [GET, POST]

@@ -2,16 +2,12 @@
 
 namespace Naviapps\Bundle\UserBundle\DependencyInjection;
 
-use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\Config\Definition\Processor;
 use Symfony\Component\Config\FileLocator;
-use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 
-/**
- * This is the class that loads and manages your bundle configuration.
- *
- * @link http://symfony.com/doc/current/cookbook/bundles/extension.html
- */
 class NaviappsUserExtension extends Extension
 {
     /**
@@ -19,10 +15,12 @@ class NaviappsUserExtension extends Extension
      */
     public function load(array $configs, ContainerBuilder $container)
     {
+        $processor = new Processor();
         $configuration = new Configuration();
-        $config = $this->processConfiguration($configuration, $configs);
 
-        $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
+        $config = $processor->processConfiguration($configuration, $configs);
+
+        $loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
 
         if (!empty($config['profile'])) {
             $this->loadProfile($config['profile'], $container, $loader);
@@ -45,61 +43,81 @@ class NaviappsUserExtension extends Extension
         }
     }
 
-    private function loadProfile(array $config, ContainerBuilder $container, XmlFileLoader $loader)
+    /**
+     * @param array            $config
+     * @param ContainerBuilder $container
+     * @param YamlFileLoader   $loader
+     */
+    private function loadProfile(array $config, ContainerBuilder $container, YamlFileLoader $loader)
     {
-        $loader->load('profile.xml');
+        $loader->load('profile.yml');
 
         $this->remapParametersNamespaces($config, $container, array(
             'form' => 'naviapps_user.profile.form.%s',
         ));
-
-        $container->setAlias('naviapps_user.profile.form.flow', $config['form']['flow']);
     }
 
-    private function loadRegistration(array $config, ContainerBuilder $container, XmlFileLoader $loader)
+    /**
+     * @param array            $config
+     * @param ContainerBuilder $container
+     * @param YamlFileLoader   $loader
+     */
+    private function loadRegistration(array $config, ContainerBuilder $container, YamlFileLoader $loader)
     {
-        $loader->load('registration.xml');
+        $loader->load('registration.yml');
 
         $this->remapParametersNamespaces($config, $container, array(
             'form' => 'naviapps_user.registration.form.%s',
         ));
-
-        $container->setAlias('naviapps_user.registration.form.flow', $config['form']['flow']);
     }
 
-    private function loadChangePassword(array $config, ContainerBuilder $container, XmlFileLoader $loader)
+    /**
+     * @param array            $config
+     * @param ContainerBuilder $container
+     * @param YamlFileLoader   $loader
+     */
+    private function loadChangePassword(array $config, ContainerBuilder $container, YamlFileLoader $loader)
     {
-        $loader->load('change_password.xml');
+        $loader->load('change_password.yml');
 
         $this->remapParametersNamespaces($config, $container, array(
             'form' => 'naviapps_user.change_password.form.%s',
         ));
-
-        $container->setAlias('naviapps_user.change_password.form.flow', $config['form']['flow']);
     }
 
-    private function loadResetting(array $config, ContainerBuilder $container, XmlFileLoader $loader)
+    /**
+     * @param array            $config
+     * @param ContainerBuilder $container
+     * @param YamlFileLoader   $loader
+     */
+    private function loadResetting(array $config, ContainerBuilder $container, YamlFileLoader $loader)
     {
-        $loader->load('resetting.xml');
+        $loader->load('resetting.yml');
 
         $this->remapParametersNamespaces($config, $container, array(
             'form' => 'naviapps_user.resetting.form.%s',
         ));
-
-        $container->setAlias('naviapps_user.resetting.form.flow', $config['form']['flow']);
     }
 
-    private function loadDeactivation(array $config, ContainerBuilder $container, XmlFileLoader $loader)
+    /**
+     * @param array            $config
+     * @param ContainerBuilder $container
+     * @param YamlFileLoader   $loader
+     */
+    private function loadDeactivation(array $config, ContainerBuilder $container, YamlFileLoader $loader)
     {
-        $loader->load('deactivation.xml');
+        $loader->load('deactivation.yml');
 
         $this->remapParametersNamespaces($config, $container, array(
             'form' => 'naviapps_user.deactivation.form.%s',
         ));
-
-        $container->setAlias('naviapps_user.deactivation.form.flow', $config['form']['flow']);
     }
 
+    /**
+     * @param array            $config
+     * @param ContainerBuilder $container
+     * @param array            $map
+     */
     protected function remapParameters(array $config, ContainerBuilder $container, array $map)
     {
         foreach ($map as $name => $paramName) {
@@ -109,6 +127,11 @@ class NaviappsUserExtension extends Extension
         }
     }
 
+    /**
+     * @param array            $config
+     * @param ContainerBuilder $container
+     * @param array            $namespaces
+     */
     protected function remapParametersNamespaces(array $config, ContainerBuilder $container, array $namespaces)
     {
         foreach ($namespaces as $ns => $map) {
@@ -128,5 +151,13 @@ class NaviappsUserExtension extends Extension
                 }
             }
         }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getNamespace()
+    {
+        return 'http://naviapps.github.io/schema/dic/user';
     }
 }

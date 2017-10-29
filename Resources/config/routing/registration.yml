@@ -1,0 +1,4 @@
+fos_user_registration_register:
+    path: /
+    defaults: { _controller: NaviappsUserBundle:Registration:register }
+    methods: [GET, POST]

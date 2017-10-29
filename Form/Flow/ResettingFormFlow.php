@@ -8,6 +8,19 @@ use Naviapps\Bundle\UserBundle\Form\Type\ResettingFormType;
 class ResettingFormFlow extends FormFlow
 {
     /**
+     * @var string
+     */
+    private $type;
+
+    /**
+     * @param string $type The type of the form
+     */
+    public function __construct($type)
+    {
+        $this->type = $type;
+    }
+
+    /**
      * {@inheritdoc}
      */
     protected function loadStepsConfig()
@@ -15,7 +28,7 @@ class ResettingFormFlow extends FormFlow
         return [
             [
                 'label' => 'resetting',
-                'form_type' => ResettingFormType::class,
+                'form_type' => $this->type,
             ],
         ];
     }

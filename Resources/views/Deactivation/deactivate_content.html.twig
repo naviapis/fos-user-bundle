@@ -1,0 +1,8 @@
+{% trans_default_domain 'NaviappsUserBundle' %}
+
+{{ form_start(form, {'method': 'post', 'action': path('naviapps_user_deactivation_deactivate', 'attr': {'class': 'naviapps_user_deactivation_deactivate'})}) }}
+    {{ form_widget(form) }}
+    <div>
+        <input type="submit" value="{{ 'deactivation.submit'|trans }}" />
+    </div>
+{{ form_end(form) }}

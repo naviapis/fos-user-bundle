@@ -16,6 +16,8 @@ public function registerBundles()
 {
     $bundles = [
         // ...
+        new FOS\UserBundle\FOSUserBundle(),
+        new Craue\FormFlowBundle\CraueFormFlowBundle(),
         new Naviapps\Bundle\UserBundle\NaviappsUserBundle(),
     ];
 
@@ -45,8 +47,3 @@ services:
             - { name: form.type, alias: naviapps_user_registration }
         arguments: ["%fos_user.model.user.class%", "%naviapps_user.deactivation.form.validation_groups%"]
 ```
-
-
-### TODO
-
-* Resources/Deactivation/deactivate.html.twig

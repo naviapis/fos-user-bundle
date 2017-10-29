@@ -2,20 +2,33 @@
 
 namespace Naviapps\Bundle\UserBundle\Controller;
 
-use FOS\UserBundle\Controller\ProfileController as BaseController;
+use Craue\FormFlowBundle\Form\FormFlowInterface;
 use FOS\UserBundle\Event\FilterUserResponseEvent;
 use FOS\UserBundle\Event\FormEvent;
 use FOS\UserBundle\Event\GetResponseUserEvent;
 use FOS\UserBundle\FOSUserEvents;
 use FOS\UserBundle\Model\UserInterface;
+use FOS\UserBundle\Model\UserManagerInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
-class ProfileController extends BaseController
+/**
+ * Controller managing the user profile.
+ *
+ * @author Haruki Fukui <haruki.fukui@naviapps.com>
+ */
+class ProfileController extends Controller
 {
     /**
-     * {@inheritdoc}
+     * Edit the user.
+     *
+     * @param Request $request
+     *
+     * @return Response
      */
     public function editAction(Request $request)
     {
@@ -24,7 +37,7 @@ class ProfileController extends BaseController
             throw new AccessDeniedException('This user does not have access to this section.');
         }
 
-        /** @var $dispatcher \Symfony\Component\EventDispatcher\EventDispatcherInterface */
+        /** @var $dispatcher EventDispatcherInterface */
         $dispatcher = $this->get('event_dispatcher');
 
         $event = new GetResponseUserEvent($user, $request);
@@ -34,21 +47,21 @@ class ProfileController extends BaseController
             return $event->getResponse();
         }
 
-        /** @var $flow \Craue\FormFlowBundle\Form\FormFlowInterface */
+        /** @var $flow FormFlowInterface */
         $flow = $this->get('naviapps_user.profile.form.flow');
 
         $flow->bind($user);
 
         // form of the current step
         $form = $flow->createForm();
-        if ($flow->isValid($form)) {
+        if ($form->isSubmitted() && $flow->isValid($form)) {
             $flow->saveCurrentStepData($form);
 
             if ($flow->nextStep()) {
                 // form for the next step
                 $form = $flow->createForm();
             } else {
-                /** @var $userManager \FOS\UserBundle\Model\UserManagerInterface */
+                /** @var $userManager UserManagerInterface */
                 $userManager = $this->get('fos_user.user_manager');
 
                 $event = new FormEvent($form, $request);
@@ -69,8 +82,9 @@ class ProfileController extends BaseController
             }
         }
 
-        return $this->render('FOSUserBundle:Profile:edit.html.twig', array(
-            'form' => $form->createView()
-        ));
+        return $this->render('@FOSUser/Profile/edit.html.twig', [
+            'form' => $form->createView(),
+            'flow' => $flow,
+        ]);
     }
 }

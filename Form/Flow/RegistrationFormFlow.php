@@ -8,6 +8,19 @@ use Naviapps\Bundle\UserBundle\Form\Type\RegistrationFormType;
 class RegistrationFormFlow extends FormFlow
 {
     /**
+     * @var string
+     */
+    private $type;
+
+    /**
+     * @param string $type The type of the form
+     */
+    public function __construct($type)
+    {
+        $this->type = $type;
+    }
+
+    /**
      * {@inheritdoc}
      */
     protected function loadStepsConfig()
@@ -15,7 +28,7 @@ class RegistrationFormFlow extends FormFlow
         return [
             [
                 'label' => 'registration',
-                'form_type' => RegistrationFormType::class,
+                'form_type' => $this->type,
             ],
         ];
     }

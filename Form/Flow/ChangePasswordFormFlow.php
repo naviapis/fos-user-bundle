@@ -8,6 +8,19 @@ use Naviapps\Bundle\UserBundle\Form\Type\ChangePasswordFormType;
 class ChangePasswordFormFlow extends FormFlow
 {
     /**
+     * @var string
+     */
+    private $type;
+
+    /**
+     * @param string $type The type of the form
+     */
+    public function __construct($type)
+    {
+        $this->type = $type;
+    }
+
+    /**
      * {@inheritdoc}
      */
     protected function loadStepsConfig()
@@ -15,7 +28,7 @@ class ChangePasswordFormFlow extends FormFlow
         return [
             [
                 'label' => 'change_password',
-                'form_type' => ChangePasswordFormType::class,
+                'form_type' => $this->type,
             ],
         ];
     }

@@ -2,27 +2,30 @@
 
 namespace Naviapps\Bundle\UserBundle\Controller;
 
-use FOS\UserBundle\Controller\ResettingController as BaseController;
+use Craue\FormFlowBundle\Form\FormFlowInterface;
 use FOS\UserBundle\Event\FilterUserResponseEvent;
 use FOS\UserBundle\Event\FormEvent;
 use FOS\UserBundle\Event\GetResponseUserEvent;
 use FOS\UserBundle\FOSUserEvents;
+use FOS\UserBundle\Model\UserManagerInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
-class ResettingController extends BaseController
+class ResettingController extends Controller
 {
     /**
      * {@inheritdoc}
      */
     public function resetAction(Request $request, $token)
     {
-        /** @var $flow \Craue\FormFlowBundle\Form\FormFlowInterface */
+        /** @var $flow FormFlowInterface */
         $flow = $this->get('naviapps_user.resetting.form.flow');
-        /** @var $userManager \FOS\UserBundle\Model\UserManagerInterface */
+        /** @var $userManager UserManagerInterface */
         $userManager = $this->get('fos_user.user_manager');
-        /** @var $dispatcher \Symfony\Component\EventDispatcher\EventDispatcherInterface */
+        /** @var $dispatcher EventDispatcherInterface */
         $dispatcher = $this->get('event_dispatcher');
 
         $user = $userManager->findUserByConfirmationToken($token);
@@ -42,7 +45,7 @@ class ResettingController extends BaseController
 
         // form of the current step
         $form = $flow->createForm();
-        if ($flow->isValid($form)) {
+        if ($form->isSubmitted() && $flow->isValid($form)) {
             $flow->saveCurrentStepData($form);
 
             if ($flow->nextStep()) {
@@ -59,7 +62,10 @@ class ResettingController extends BaseController
                     $response = new RedirectResponse($url);
                 }
 
-                $dispatcher->dispatch(FOSUserEvents::RESETTING_RESET_COMPLETED, new FilterUserResponseEvent($user, $request, $response));
+                $dispatcher->dispatch(
+                    FOSUserEvents::RESETTING_RESET_COMPLETED,
+                    new FilterUserResponseEvent($user, $request, $response)
+                );
 
                 $flow->reset(); // remove step data from the session
 
@@ -67,9 +73,9 @@ class ResettingController extends BaseController
             }
         }
 
-        return $this->render('FOSUserBundle:Resetting:reset.html.twig', array(
+        return $this->render('@FOSUser/Resetting/reset.html.twig', [
             'token' => $token,
             'form' => $form->createView(),
-        ));
+        ]);
     }
 }
