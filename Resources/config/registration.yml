@@ -1,5 +1,5 @@
 services:
     naviapps_user.registration.form.flow:
-        class: Naviapps\Bundle\UserBundle\Form\Flow\RegistrationFormFlow
+        class: '%naviapps_user.registration.form.flow%'
         parent: craue.form.flow
         arguments: ['%fos_user.registration.form.type%']

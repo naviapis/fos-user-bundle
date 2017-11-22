@@ -20,7 +20,7 @@ class NaviappsUserExtension extends Extension
 
         $config = $processor->processConfiguration($configuration, $configs);
 
-        $loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
+        $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
 
         if (!empty($config['profile'])) {
             $this->loadProfile($config['profile'], $container, $loader);

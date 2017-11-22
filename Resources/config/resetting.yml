@@ -1,5 +1,5 @@
 services:
     naviapps_user.resetting.form.flow:
-        class: Naviapps\Bundle\UserBundle\Form\Flow\ResettingFormFlow
+        class: '%naviapps_user.resetting.form.flow%'
         parent: craue.form.flow
         arguments: ['%fos_user.resetting.form.type%']

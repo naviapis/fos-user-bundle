@@ -6,6 +6,6 @@ services:
         arguments: ['%fos_user.model.user.class%']
 
     naviapps_user.deactivation.form.flow:
-        class: Naviapps\Bundle\UserBundle\Form\Flow\DeactivationFormFlow
+        class: '%naviapps_user.deactivation.form.flow%'
         parent: craue.form.flow
         arguments: ['%naviapps_user.deactivation.form.type%']

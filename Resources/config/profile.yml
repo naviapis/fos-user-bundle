@@ -1,5 +1,5 @@
 services:
     naviapps_user.profile.form.flow:
-        class: Naviapps\Bundle\UserBundle\Form\Flow\ProfileFormFlow
+        class: '%naviapps_user.profile.form.flow%'
         parent: craue.form.flow
         arguments: ['%fos_user.profile.form.type%']
