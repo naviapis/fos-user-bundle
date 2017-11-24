@@ -1,6 +1,6 @@
 <?php
 
-namespace Naviapps\Bundle\UserBundle\Controller;
+namespace Naviapps\Bundle\FOSUserBundle\Controller;
 
 use Craue\FormFlowBundle\Form\FormFlowInterface;
 use FOS\UserBundle\Event\FilterUserResponseEvent;
@@ -29,7 +29,7 @@ class RegistrationController extends Controller
     public function registerAction(Request $request)
     {
         /** @var $flow FormFlowInterface */
-        $flow = $this->get('naviapps_user.registration.form.flow');
+        $flow = $this->get('naviapps_fos_user.registration.form.flow');
         /** @var $userManager UserManagerInterface */
         $userManager = $this->get('fos_user.user_manager');
         /** @var $dispatcher EventDispatcherInterface */

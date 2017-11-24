@@ -1,11 +1,11 @@
 <?php
 
-namespace Naviapps\Bundle\UserBundle;
+namespace Naviapps\Bundle\FOSUserBundle;
 
 /**
- * Contains all events thrown in the NaviappsUserBundle
+ * Contains all events thrown in the NaviappsFOSUserBundle
  */
-final class NaviappsUserEvents
+final class NaviappsFOSUserEvents
 {
     /**
      * The DEACTIVATION_INITIALIZE event occurs when the deactivation process is initialized.
@@ -14,7 +14,7 @@ final class NaviappsUserEvents
      *
      * @Event("FOS\UserBundle\Event\UserEvent")
      */
-    const DEACTIVATION_INITIALIZE = 'naviapps_user.deactivation.initialize';
+    const DEACTIVATION_INITIALIZE = 'naviapps_fos_user.deactivation.initialize';
 
     /**
      * The DEACTIVATION_SUCCESS event occurs when the deactivation form is submitted successfully.
@@ -23,7 +23,7 @@ final class NaviappsUserEvents
      *
      * @Event("FOS\UserBundle\Event\UserEvent")
      */
-    const DEACTIVATION_SUCCESS = 'naviapps_user.deactivation.success';
+    const DEACTIVATION_SUCCESS = 'naviapps_fos_user.deactivation.success';
 
     /**
      * The DEACTIVATION_FAILURE event occurs when the deactivation form is not valid.
@@ -32,7 +32,7 @@ final class NaviappsUserEvents
      *
      * @Event("FOS\UserBundle\Event\FormEvent")
      */
-    const DEACTIVATION_FAILURE = 'naviapps_user.deactivation.failure';
+    const DEACTIVATION_FAILURE = 'naviapps_fos_user.deactivation.failure';
 
     /**
      * The DEACTIVATION_COMPLETED event occurs after saving the user in the deactivation process.
@@ -41,5 +41,5 @@ final class NaviappsUserEvents
      *
      * @Event("FOS\UserBundle\Event\FilterUserResponseEvent")
      */
-    const DEACTIVATION_COMPLETED = 'naviapps_user.deactivation.completed';
+    const DEACTIVATION_COMPLETED = 'naviapps_fos_user.deactivation.completed';
 }

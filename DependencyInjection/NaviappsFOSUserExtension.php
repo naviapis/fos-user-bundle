@@ -1,6 +1,6 @@
 <?php
 
-namespace Naviapps\Bundle\UserBundle\DependencyInjection;
+namespace Naviapps\Bundle\FOSUserBundle\DependencyInjection;
 
 use Symfony\Component\Config\Definition\Processor;
 use Symfony\Component\Config\FileLocator;
@@ -8,7 +8,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 
-class NaviappsUserExtension extends Extension
+class NaviappsFOSUserExtension extends Extension
 {
     /**
      * {@inheritdoc}
@@ -37,10 +37,6 @@ class NaviappsUserExtension extends Extension
         if (!empty($config['resetting'])) {
             $this->loadResetting($config['resetting'], $container, $loader);
         }
-
-        if (!empty($config['deactivation'])) {
-            $this->loadDeactivation($config['deactivation'], $container, $loader);
-        }
     }
 
     /**
@@ -53,7 +49,7 @@ class NaviappsUserExtension extends Extension
         $loader->load('profile.yml');
 
         $this->remapParametersNamespaces($config, $container, array(
-            'form' => 'naviapps_user.profile.form.%s',
+            'form' => 'naviapps_fos_user.profile.form.%s',
         ));
     }
 
@@ -67,7 +63,7 @@ class NaviappsUserExtension extends Extension
         $loader->load('registration.yml');
 
         $this->remapParametersNamespaces($config, $container, array(
-            'form' => 'naviapps_user.registration.form.%s',
+            'form' => 'naviapps_fos_user.registration.form.%s',
         ));
     }
 
@@ -81,7 +77,7 @@ class NaviappsUserExtension extends Extension
         $loader->load('change_password.yml');
 
         $this->remapParametersNamespaces($config, $container, array(
-            'form' => 'naviapps_user.change_password.form.%s',
+            'form' => 'naviapps_fos_user.change_password.form.%s',
         ));
     }
 
@@ -95,21 +91,7 @@ class NaviappsUserExtension extends Extension
         $loader->load('resetting.yml');
 
         $this->remapParametersNamespaces($config, $container, array(
-            'form' => 'naviapps_user.resetting.form.%s',
-        ));
-    }
-
-    /**
-     * @param array            $config
-     * @param ContainerBuilder $container
-     * @param YamlFileLoader   $loader
-     */
-    private function loadDeactivation(array $config, ContainerBuilder $container, YamlFileLoader $loader)
-    {
-        $loader->load('deactivation.yml');
-
-        $this->remapParametersNamespaces($config, $container, array(
-            'form' => 'naviapps_user.deactivation.form.%s',
+            'form' => 'naviapps_fos_user.resetting.form.%s',
         ));
     }
 
@@ -151,13 +133,5 @@ class NaviappsUserExtension extends Extension
                 }
             }
         }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getNamespace()
-    {
-        return 'http://naviapps.github.io/schema/dic/user';
     }
 }

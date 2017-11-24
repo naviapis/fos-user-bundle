@@ -1,13 +1,11 @@
 <?php
 
-namespace Naviapps\Bundle\UserBundle\DependencyInjection;
+namespace Naviapps\Bundle\FOSUserBundle\DependencyInjection;
 
-use Naviapps\Bundle\UserBundle\Form\Flow\ChangePasswordFormFlow;
-use Naviapps\Bundle\UserBundle\Form\Flow\DeactivationFormFlow;
-use Naviapps\Bundle\UserBundle\Form\Flow\ProfileFormFlow;
-use Naviapps\Bundle\UserBundle\Form\Flow\RegistrationFormFlow;
-use Naviapps\Bundle\UserBundle\Form\Flow\ResettingFormFlow;
-use Naviapps\Bundle\UserBundle\Form\Type\DeactivationFormType;
+use Naviapps\Bundle\FOSUserBundle\Form\Flow\ChangePasswordFormFlow;
+use Naviapps\Bundle\FOSUserBundle\Form\Flow\ProfileFormFlow;
+use Naviapps\Bundle\FOSUserBundle\Form\Flow\RegistrationFormFlow;
+use Naviapps\Bundle\FOSUserBundle\Form\Flow\ResettingFormFlow;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
@@ -25,13 +23,12 @@ class Configuration implements ConfigurationInterface
     public function getConfigTreeBuilder()
     {
         $treeBuilder = new TreeBuilder();
-        $rootNode = $treeBuilder->root('naviapps_user');
+        $rootNode = $treeBuilder->root('naviapps_fos_user');
 
         $this->addProfileSection($rootNode);
         $this->addChangePasswordSection($rootNode);
         $this->addRegistrationSection($rootNode);
         $this->addResettingSection($rootNode);
-        $this->addDeactivationSection($rootNode);
 
         return $treeBuilder;
     }
@@ -118,35 +115,6 @@ class Configuration implements ConfigurationInterface
                             ->addDefaultsIfNotSet()
                             ->children()
                                 ->scalarNode('flow')->defaultValue(ChangePasswordFormFlow::class)->end()
-                            ->end()
-                        ->end()
-                    ->end()
-                ->end()
-            ->end();
-    }
-
-    /**
-     * @param ArrayNodeDefinition $node
-     */
-    private function addDeactivationSection(ArrayNodeDefinition $node)
-    {
-        $node
-            ->children()
-                ->arrayNode('deactivation')
-                    ->addDefaultsIfNotSet()
-                    ->canBeUnset()
-                    ->children()
-                        ->arrayNode('form')
-                            ->addDefaultsIfNotSet()
-                            ->fixXmlConfig('validation_group')
-                            ->children()
-                                ->scalarNode('flow')->defaultValue(DeactivationFormFlow::class)->end()
-                                ->scalarNode('type')->defaultValue(DeactivationFormType::class)->end()
-                                ->scalarNode('name')->defaultValue('naviapps_user_deactivation_form')->end()
-                                ->arrayNode('validation_groups')
-                                    ->prototype('scalar')->end()
-                                    ->defaultValue(['Deactivation', 'Default'])
-                                ->end()
                             ->end()
                         ->end()
                     ->end()

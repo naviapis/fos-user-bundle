@@ -1,9 +1,8 @@
 <?php
 
-namespace Naviapps\Bundle\UserBundle\Form\Flow;
+namespace Naviapps\Bundle\FOSUserBundle\Form\Flow;
 
 use Craue\FormFlowBundle\Form\FormFlow;
-use Naviapps\Bundle\UserBundle\Form\Type\RegistrationFormType;
 
 class RegistrationFormFlow extends FormFlow
 {

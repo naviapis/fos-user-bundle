@@ -1,6 +1,6 @@
 <?php
 
-namespace Naviapps\Bundle\UserBundle\Controller;
+namespace Naviapps\Bundle\FOSUserBundle\Controller;
 
 use Craue\FormFlowBundle\Form\FormFlowInterface;
 use FOS\UserBundle\Event\FilterUserResponseEvent;
@@ -22,7 +22,7 @@ class ResettingController extends Controller
     public function resetAction(Request $request, $token)
     {
         /** @var $flow FormFlowInterface */
-        $flow = $this->get('naviapps_user.resetting.form.flow');
+        $flow = $this->get('naviapps_fos_user.resetting.form.flow');
         /** @var $userManager UserManagerInterface */
         $userManager = $this->get('fos_user.user_manager');
         /** @var $dispatcher EventDispatcherInterface */

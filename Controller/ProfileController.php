@@ -1,6 +1,6 @@
 <?php
 
-namespace Naviapps\Bundle\UserBundle\Controller;
+namespace Naviapps\Bundle\FOSUserBundle\Controller;
 
 use Craue\FormFlowBundle\Form\FormFlowInterface;
 use FOS\UserBundle\Event\FilterUserResponseEvent;
@@ -48,7 +48,7 @@ class ProfileController extends Controller
         }
 
         /** @var $flow FormFlowInterface */
-        $flow = $this->get('naviapps_user.profile.form.flow');
+        $flow = $this->get('naviapps_fos_user.profile.form.flow');
 
         $flow->bind($user);
 

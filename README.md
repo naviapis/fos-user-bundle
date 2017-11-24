@@ -1,12 +1,12 @@
-# NaviappsUserBundle
+# NaviappsFOSUserBundle
 
-* Deactivate
-* Form Flow
+NaviappsFOSUserBundle provides a facility for building and handling multi-step forms in your FOSUserBundle project.<br>
+use [CraueFormFlowBundle](https://github.com/craue/CraueFormFlowBundle);
 
 ## Setup
 
 ```
-composer require naviapps/user-bundle
+composer require naviapps/fos-user-bundle
 ```
 
 app/AppKernel.php
@@ -18,32 +18,60 @@ public function registerBundles()
         // ...
         new FOS\UserBundle\FOSUserBundle(),
         new Craue\FormFlowBundle\CraueFormFlowBundle(),
-        new Naviapps\Bundle\UserBundle\NaviappsUserBundle(),
+        new Naviapps\Bundle\FOSUserBundle\NaviappsFOSUserBundle(),
     ];
 
     // ...
 }
 ```
 
-app/config/routing.yml
+## Overriding a Form Flow and Form Type
 
-``` yaml
-naviapps_user_deactivation:
-    resource: "@NaviappsUserBundle/Resources/config/routing/deactivation.xml"
-    prefix:   /deactivate
+RegistrationFlow.php
+
+```php
+<?php
+// src/AppBundle/Form/RegistrationFlow.php
+
+namespace AppBundle\Form;
+
+use Naviapps\Bundle\FOSUserBundle\Form\Flow\RegistrationFormFlow as BaseFormFlow;
+
+class RegistrationFlow extends BaseFormFlow
+{
+    /**
+     * {@inheritdoc}
+     */
+    protected function loadStepsConfig()
+    {
+        return array_merge(parent::loadStepsConfig(), [
+            [
+                'label' => 'confirmation',
+            ],
+        ]);
+    }
+}
 ```
 
-## Customize
+services.yml
 
 ``` yaml
+# app/config/services.yml
 services:
-    app.deactivation.form.flow:
-        class: AppBundle\Form\Flow\DeactivationFormFlow
+    AppBundle\Form\RegistrationFlow:
         parent: craue.form.flow
+        autowire: false
+        autoconfigure: false
+        public: true
+```
 
-    app.deactivation.form.type:
-        class: AppBundle\Form\Type\DeactivationFormType
-        tags:
-            - { name: form.type, alias: naviapps_user_registration }
-        arguments: ["%fos_user.model.user.class%", "%naviapps_user.deactivation.form.validation_groups%"]
+config.yml
+
+```yaml
+# app/config/config.yml
+naviapps_fos_user:
+    # ...
+    registration:
+        form:
+            flow: AppBundle\Form\RegistrationFlow
 ```
